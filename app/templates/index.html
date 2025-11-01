@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Missing Person AI{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Hero Section -->
+    <div class="hero-section text-center fade-in">
+        <h1 class="hero-title">
+            <i class="fas fa-shield-alt me-3"></i>
+            AI-Powered Missing Person Detection
+        </h1>
+        <p class="hero-subtitle">
+            Real-time facial recognition system to help locate and reunite missing persons with their families
+        </p>
+        <div class="mt-4">
+            <a href="{{ url_for('main.register') }}" class="btn btn-light btn-lg me-3">
+                <i class="fas fa-user-plus me-2"></i>Report Missing Person
+            </a>
+            <a href="{{ url_for('main.dashboard') }}" class="btn btn-outline-light btn-lg">
+                <i class="fas fa-chart-line me-2"></i>View Dashboard
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Live Video Feed -->
+<div class="col-lg-8 mb-4">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">
+                <i class="fas fa-video me-2"></i>
+                Live CCTV Monitoring
+                <span class="badge bg-danger ms-2">
+                    <i class="fas fa-circle me-1"></i>LIVE
+                </span>
+            </h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="video-container" style="position: relative; min-height: 400px; background: #000;">
+                <!-- Loading indicator -->
+                <div id="loading" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; text-align: center;">
+                    <div class="spinner-border text-light mb-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p>Initializing camera...</p>
+                </div>
+                
+                <!-- Camera feed -->
+                <img id="videoFeed" 
+                     src="{{ url_for('main.video_feed') }}" 
+                     class="video-feed" 
+                     style="width: 100%; height: auto; display: none;"
+                     alt="Live Feed"
+                     onload="document.getElementById('loading').style.display='none'; this.style.display='block';"
+                     onerror="document.getElementById('loading').innerHTML='<p class=text-danger>Camera feed error. Check console.</p>'">
+            </div>
+        </div>
+        <div class="card-footer bg-light">
+            <small class="text-muted">
+                <i class="fas fa-info-circle me-2"></i>
+                Camera feed active. Face detection will be enabled after registration.
+            </small>
+        </div>
+    </div>
+</div>
+
+
+        <!-- Statistics and Info -->
+        <div class="col-lg-4">
+            <!-- Quick Stats -->
+            <div class="stat-card mb-4 fade-in">
+                <div class="stat-icon text-primary">
+                    <i class="fas fa-users"></i>
+                </div>
+                <p class="stat-value">{{ stats.total_persons or 0 }}</p>
+                <p class="stat-label">Registered Persons</p>
+            </div>
+
+            <div class="stat-card mb-4 fade-in">
+                <div class="stat-icon text-success">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <p class="stat-value">{{ stats.total_detections or 0 }}</p>
+                <p class="stat-label">Total Detections</p>
+            </div>
+
+            <div class="stat-card mb-4 fade-in">
+                <div class="stat-icon text-warning">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <p class="stat-value">{{ stats.recent_detections or 0 }}</p>
+                <p class="stat-label">Last 24 Hours</p>
+            </div>
+
+            <!-- System Status -->
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-server me-2"></i>System Status
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span>Database</span>
+                        <span class="badge bg-success">
+                            <i class="fas fa-check me-1"></i>Connected
+                        </span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span>AI Model</span>
+                        <span class="badge bg-success">
+                            <i class="fas fa-check me-1"></i>Active
+                        </span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span>Camera Feed</span>
+                        <span class="badge bg-success">
+                            <i class="fas fa-check me-1"></i>Online
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <h2 class="text-center mb-4">
+                <i class="fas fa-star me-2"></i>Key Features
+            </h2>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <div class="text-primary mb-3" style="font-size: 3rem;">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h5 class="card-title">AI-Powered Recognition</h5>
+                    <p class="card-text">Advanced deep learning models for accurate face detection and matching</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <div class="text-success mb-3" style="font-size: 3rem;">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h5 class="card-title">Real-Time Processing</h5>
+                    <p class="card-text">Instant alerts when missing persons are detected in surveillance feeds</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <div class="text-info mb-3" style="font-size: 3rem;">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h5 class="card-title">Location Tracking</h5>
+                    <p class="card-text">Track last seen locations and movement patterns of detected persons</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

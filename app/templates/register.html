@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}Register Missing Person - Missing Person AI{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card fade-in">
+                <div class="card-header">
+                    <h4 class="mb-0">
+                        <i class="fas fa-user-plus me-2"></i>
+                        Report a Missing Person
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" enctype="multipart/form-data" id="registerForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label">
+                                    <i class="fas fa-user me-2"></i>Full Name *
+                                </label>
+                                <input type="text" class="form-control" id="name" name="name" required placeholder="Enter full name">
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="age" class="form-label">
+                                    <i class="fas fa-calendar me-2"></i>Age *
+                                </label>
+                                <input type="number" class="form-control" id="age" name="age" required placeholder="Enter age" min="1" max="120">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="contact" class="form-label">
+                                <i class="fas fa-phone me-2"></i>Contact Information *
+                            </label>
+                            <input type="text" class="form-control" id="contact" name="contact" required placeholder="Phone number or email">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">
+                                <i class="fas fa-align-left me-2"></i>Physical Description
+                            </label>
+                            <textarea class="form-control" id="description" name="description" rows="4" placeholder="Height, weight, distinguishing features, last seen wearing..."></textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="photo" class="form-label">
+                                <i class="fas fa-camera me-2"></i>Upload Photo *
+                            </label>
+                            <input type="file" class="form-control" id="photo" name="photo" required accept="image/*">
+                            <small class="form-text text-muted mt-2 d-block">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Please upload a clear, front-facing photo. Accepted formats: JPG, PNG, JPEG, GIF (Max 16MB)
+                            </small>
+                            
+                            <!-- Image Preview -->
+                            <div id="imagePreview" class="mt-3" style="display: none;">
+                                <img id="preview" src="" alt="Preview" class="img-thumbnail" style="max-width: 300px;">
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-paper-plane me-2"></i>
+                                Submit Report
+                            </button>
+                            <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Information Card -->
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h6 class="card-title">
+                        <i class="fas fa-lightbulb me-2 text-warning"></i>
+                        Tips for Better Results
+                    </h6>
+                    <ul class="mb-0">
+                        <li>Use a recent, high-quality photo</li>
+                        <li>Ensure the face is clearly visible and well-lit</li>
+                        <li>Front-facing photos work best</li>
+                        <li>Avoid photos with sunglasses or face coverings</li>
+                        <li>Include detailed physical description for better identification</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Image preview functionality
+document.getElementById('photo').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('preview').src = e.target.result;
+            document.getElementById('imagePreview').style.display = 'block';
+        }
+        reader.readAsDataURL(file);
+    }
+});
+
+// Form validation
+document.getElementById('registerForm').addEventListener('submit', function(e) {
+    const fileInput = document.getElementById('photo');
+    const file = fileInput.files[0];
+    
+    if (file && file.size > 16 * 1024 * 1024) {
+        e.preventDefault();
+        alert('File size must be less than 16MB');
+        return false;
+    }
+});
+</script>
+{% endblock %}
