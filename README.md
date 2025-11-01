@@ -52,7 +52,7 @@ missing-person-ai
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/missing-person-ai.git
+   git clone https://github.com/LaveUI/missing-person-ai.git
    cd missing-person-ai
    ```
 
